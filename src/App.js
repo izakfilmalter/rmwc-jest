@@ -1,80 +1,42 @@
 import React, { Component } from 'react';
 
-import '@material/textfield/dist/mdc.textfield.min.css';
-import {TextField, TextFieldIcon} from 'rmwc/TextField';
-import _ from 'lodash';
+import '@material/tabs/dist/mdc.tabs.min.css';
+import { Tab, TabBar } from 'rmwc/Tabs';
 
-const immutableKeys = ['author_id', 'created_at', 'updated_at'];
+import styled from 'styled-components';
+
+const StyledTab = styled(Tab)`
+  background: red !important;
+`;
 
 class App extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      name: '',
+      activeTabIndex: 0,
     };
-
-    this.onChange = this.onChange.bind(this);
-    this.hydrateForm = this.hydrateForm.bind(this);
-  }
-
-  componentWillMount() {
-    const { rootItem } = this.props;
-
-    if (rootItem) {
-      this.hydrateForm(rootItem);
-    }
-  }
-
-  componentWillReceiveProps(nextProps) {
-    const { rootItem } = nextProps;
-
-    if (rootItem) {
-      this.hydrateForm(rootItem);
-    }
-  }
-
-  hydrateForm(rootItem, formsImmutableKeys = []) {
-    if (rootItem) {
-      this.setState(prevState => ({
-        ...prevState,
-        ..._.omit(rootItem, [...immutableKeys, ...formsImmutableKeys]),
-      }));
-    } else {
-      const newState = {};
-      _.forEach(this.state, (value, key) => {
-        newState[key] = '';
-      });
-
-      this.setState(newState);
-    }
-  };
-
-  onChange(event, key) {
-    this.setState({ [key]: event.target.value });
   }
 
   render() {
-    const {name} = this.state;
+    const { activeTabIndex } = this.state;
 
     return (
-        <TextField
-          autoCapitalize="words"
-          label="Category Name"
-          name="name"
-          onChange={event => this.onChange(event, 'name')}
-          required
-          type="text"
-          value={name}
-          withLeadingIcon={<TextFieldIcon use="move_to_inbox" />}
-        />
-    );
-  }
-}
+      <TabBar
+        activeTabIndex={activeTabIndex}
+        onChange={evt =>
+          this.setState({ activeTabIndex: evt.target.value })
+        }
+      >
+        <StyledTab>
+          Home
+        </StyledTab>
 
-App.defaultProps = {
-  rootItem: {
-    name: 'Rmwc Jest'
+        <StyledTab>
+          About Us
+        </StyledTab>
+      </TabBar>
+    );
   }
 }
 

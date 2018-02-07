@@ -31,10 +31,6 @@ class App extends Component {
         <StyledTab>
           Home
         </StyledTab>
-
-        <StyledTab>
-          About Us
-        </StyledTab>
       </TabBar>
     );
   }
